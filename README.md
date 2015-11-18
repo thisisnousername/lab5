@@ -16,4 +16,4 @@ The 'init' and 'print' function as well as the stringstream structure are pre-wr
 
  * Write a 'statistics' function which calculates (and overwrites) *meanx*, *meany* and *var*, thus mean positions and variance
 
-Note that we expect the variance *var* to increase linearly in time as we investigate diffusion. You can plot all your output files at once by writing 'plot for [i=0:10] 'rwalk_'.i.'.dat' w p' in gnuplot.
+Note that we expect the variance *var* to increase **linearly** in time as we investigate diffusion. You can plot all your output files at once by writing ***plot for [i=0:10] 'rwalk_'.i.'.dat' w p' in gnuplot***.
