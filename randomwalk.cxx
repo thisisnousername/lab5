@@ -10,46 +10,11 @@ struct colloid{
     double x,y;
 };
 
-void init(colloid* const c, const int N){
-    for(int i = 0; i < N; i++){
-	c[i].x = 0;
-	c[i].y = 0;
-    }
-}
-
-void print(const colloid* const c, const int N, const string fname){
-    ofstream out(fname.c_str());
-    for(int i = 0; i < N; i++)
-	out << c[i].x << "\t" << c[i].y << endl;
-    out.close();
-}
-
-void randomize(int* rx, int *ry, const int N){
-	for(int i=0; i<N; i++){
-		rx[i] = int((double(rand())/RAND_MAX)*3)-1;
-		ry[i] = int((double(rand())/RAND_MAX)*3)-1;
-	}
-}
-
-void push(colloid* const c, int*rx, int* ry, const int N, const double step){
-	for(int i=0; i<N; i++){
-		c[i].x += step*rx[i];
-		c[i].y += step*ry[i];
-	}
-}
-
-void evaluate(const colloid* const c, double& meanx, double& meany, double& var, const int N){
-	meanx=0; meany=0; var=0;
-	for(int i=0; i<N; i++){
-		meanx += c[i].x;
-		meany += c[i].y;
-	}
-	meanx /= N;
-	meany /= N;
-	for(int i=0; i<N; i++)
-		var += pow(c[i].x-meanx, 2.0)+pow(c[i].y-meany, 2.0);
-	var /= N;
-}
+void init(colloid* const c, const int N);
+void print(const colloid* const c, const int N, const string fname);
+void randomize(int* rx, int *ry, const int N);
+void push(colloid* const c, int*rx, int* ry, const int N, const double step);
+void evaluate(const colloid* const c, double& meanx, double& meany, double& var, const int N);
 
 int main(void){
   
@@ -97,4 +62,45 @@ int main(void){
     stat.close();			// close statistics file
     delete[] rx,ry,c;			// delete dynamically allocated arrays
     return 0;
+}
+
+void init(colloid* const c, const int N){
+    for(int i = 0; i < N; i++){
+	c[i].x = 0;
+	c[i].y = 0;
+    }
+}
+
+void print(const colloid* const c, const int N, const string fname){
+    ofstream out(fname.c_str());
+    for(int i = 0; i < N; i++)
+	out << c[i].x << "\t" << c[i].y << endl;
+    out.close();
+}
+
+void randomize(int* rx, int *ry, const int N){
+	for(int i=0; i<N; i++){
+		rx[i] = int((double(rand())/RAND_MAX)*3)-1;
+		ry[i] = int((double(rand())/RAND_MAX)*3)-1;
+	}
+}
+
+void push(colloid* const c, int*rx, int* ry, const int N, const double step){
+	for(int i=0; i<N; i++){
+		c[i].x += step*rx[i];
+		c[i].y += step*ry[i];
+	}
+}
+
+void evaluate(const colloid* const c, double& meanx, double& meany, double& var, const int N){
+	meanx=0; meany=0; var=0;
+	for(int i=0; i<N; i++){
+		meanx += c[i].x;
+		meany += c[i].y;
+	}
+	meanx /= N;
+	meany /= N;
+	for(int i=0; i<N; i++)
+		var += pow(c[i].x-meanx, 2.0)+pow(c[i].y-meany, 2.0);
+	var /= N;
 }
