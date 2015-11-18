@@ -13,7 +13,7 @@ void init(colloid* const c, const int N);
 void conditions(int* const rx, int* const ry, const int N);
 void pusher(colloid* const c, const int* const rx, const int* const ry, const double step, const int N);
 void print(const colloid* const c, const int N, const string fname);
-void statistics(double& mean, double& var, const colloid* const c, const int N);
+void statistics(double& meanx, double& meany, double& var, const colloid* const c, const int N);
 
 
 int main(void){
@@ -22,6 +22,9 @@ int main(void){
     int*      rx = new int[N];
     int*      ry = new int[N];
     colloid*  c  = new colloid[N];
+    
+    double meanx, meany, var;
+    ofstream stat("statistics.dat");
     
     const double step = 0.1;
     
@@ -44,13 +47,16 @@ int main(void){
 	for(int j = 0; j < Nsubsteps; j++){
 	    conditions(rx, ry, N);
 	    pusher(c, rx, ry, step, N);
+	    statistics(meanx, meany, var, c, N);
+	    stat << (i-1)*Nsubsteps+j << "\t" << meanx << "\t";
+	    stat << meany << "\t" << var << endl;
 	}
 	s.str("");
 	s << fname << "_" << i << ".dat";
 	print(c, N, s.str());
     }
     
-    
+    stat.close();
     delete[] rx,ry,c;
     return 0;
 }
@@ -83,5 +89,18 @@ void print(const colloid* const c, const int N, const string fname){
     out.close();
 }
 
-void statistics(double& mean, double& var, const colloid* const c, const int N){
+void statistics(double& meanx, double& meany, double& var, const colloid* const c, const int N){
+    meanx = 0;
+    meany = 0;
+    for(int i = 0; i < N; i++){
+	meanx += c[i].x;
+	meany += c[i].y;
+    }
+    meanx /= N;
+    meany /= N;
+    
+    var = 0;
+    for(int i = 0; i < N; i++)
+	var += (c[i].x-meanx)*(c[i].x-meanx) + (c[i].y-meany)*(c[i].y-meany);
+    var /= N;
 }
